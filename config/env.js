@@ -1,5 +1,35 @@
-WEREAD_COOKIE=wr_gid=279788753; wr_fp=2352408306; wr_ql=0; wr_vid=226129184; wr_skey=8FJLODwN; wr_pf=0; wr_rt=web%40Hj7ooNXiscsl2NW8jD1_AL; wr_localvid=e2b328f07d7a7520e2b3d39; wr_name=Vanson; wr_avatar=https%3A%2F%2Fres.weread.qq.com%2Fwravatar%2FWV0025-CirFk~aQYxmr2dSxN3Phie1%2F0; wr_gender=0
-FEISHU_APP_ID=你的飞书App ID
-FEISHU_APP_SECRET=quZT6bKZ5VS6gEEQW5YfjgOPaM6WONTi
-FEISHU_APP_TOKEN=cli_a870fb9b27f9100e
-FEISHU_TABLE_ID=OsD4bRf8WaQ9NFs49Vccer2Enpc
+// config/env.js
+import dotenv from 'dotenv';
+dotenv.config();
+
+// 配置对象
+export const config = {
+  weread: {
+    cookie: process.env.WEREAD_COOKIE || ''
+  },
+  feishu: {
+    appId: process.env.FEISHU_APP_ID || '',
+    appSecret: process.env.FEISHU_APP_SECRET || '',
+    appToken: process.env.FEISHU_APP_TOKEN || '',
+    tableId: process.env.FEISHU_TABLE_ID || ''
+  }
+};
+
+// 环境验证函数
+export function validateEnvironment() {
+  const required = [
+    'WEREAD_COOKIE',
+    'FEISHU_APP_ID',
+    'FEISHU_APP_SECRET', 
+    'FEISHU_APP_TOKEN',
+    'FEISHU_TABLE_ID'
+  ];
+
+  const missing = required.filter(key => !process.env[key]);
+  
+  if (missing.length > 0) {
+    throw new Error(`缺少环境变量: ${missing.join(', ')}`);
+  }
+  
+  console.log('✅ 环境配置验证通过');
+}
